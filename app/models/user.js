@@ -60,7 +60,7 @@ var passwordValidator = [
 var UserSchema = new Schema({
   name: {type: String, required: true, validate: nameValidator },
   username: {type: String, lowercase: true, required: true, unique: true, validate: usernameValidator},
-  password: {type: String, required:true, validate: passwordValidator },
+  password: {type: String, required:true, validate: passwordValidator, select: false },
   email: {type: String, lowercase: true, required: true, unique: true, validate: emailValidator },
   active: {type: Boolean, required: true, default: false},
   temporarytoken: {type: String, required: true }
@@ -68,6 +68,9 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save', function(next) {
   var user = this;
+
+  if(!user.isModified('password')) return next();
+  
   bcrypt.hash(user.password , null, null, function(err, hash) {
     if(err) return next(err);
           user.password = hash;

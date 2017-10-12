@@ -34,19 +34,19 @@
 </div>
 
 <div class="row show-hide-message" ng-show=" main.errorMsg">
-	<div class="alert alert-danger"> {{ main.errorMsg }}</div>
+	<div class="alert alert-danger"> {{ main.errorMsg }} &nbsp <a ng-show="main.expired" href="/resend"> <button type="button" class="btn btn-success">Resend Activation Email</button></a> </div>
 </div>
 
 <div class="row show-hide-message" ng-show=" facebook.errorMsg">
-	<div class="alert alert-danger"> {{ facebook.errorMsg }}</div>
+	<div class="alert alert-danger"> {{ facebook.errorMsg }} &nbsp <a ng-show="facebook.expired" href="/resend"> <button type="button" class="btn btn-success">Resend Activation Email</button></a></div>
 </div>
 
 <div class="row show-hide-message" ng-show=" twitter.errorMsg">
-	<div class="alert alert-danger"> {{ twitter.errorMsg }}</div>
+	<div class="alert alert-danger"> {{ twitter.errorMsg }} &nbsp <a ng-show="twitter.expired" href="/resend"> <button type="button" class="btn btn-success">Resend Activation Email</button></a></div>
 </div>
 
 <div class="row show-hide-message" ng-show=" google.errorMsg">
-	<div class="alert alert-danger"> {{ google.errorMsg }}</div>
+	<div class="alert alert-danger"> {{ google.errorMsg }} &nbsp <a ng-show="google.expired" href="/resend"> <button type="button" class="btn btn-success">Resend Activation Email</button></a></div>
 </div>
 
 

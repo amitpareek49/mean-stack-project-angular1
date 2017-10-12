@@ -46,6 +46,7 @@ angular.module('mainController', ['authServices'])
 	this.doLogin = function(loginData) {
 		app.loading = true;
 		app.errorMsg = false;
+		app.expired = false;
 		console.log('form submitted');
 				//$http.post('/api/authenticate', app.loginData).then(function(data){
 		     Auth.login(app.loginData).then(function(data){
@@ -61,9 +62,16 @@ angular.module('mainController', ['authServices'])
 						app.successMsg =false;
 					}, 2000);
 
-				} else{
-					app.loading = false;
-					app.errorMsg = data.data.message;
+				} 
+				else{
+					if(data.data.expired){
+						app.expired = true;
+						app.loading = false;
+						app.errorMsg = data.data.message;
+					} else {
+						app.loading = false;
+						app.errorMsg = data.data.message;
+				}
 				}
 		});
 	}

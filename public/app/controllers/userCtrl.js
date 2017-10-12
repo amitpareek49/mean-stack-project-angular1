@@ -116,9 +116,14 @@ angular.module('userControllers', ['userServices'])
 
 .controller('facebookCtrl', function($routeParams, Auth, $location, $window){
         var app = this;
+        app.errorMsg = false;
+        app.expired = false;
         //Auth.facebook
         if($window.location.pathname == '/facebookerror'){
             app.errorMsg = "username not found in database";
+        } else if($window.location.pathname == '/facebook/inactive/error'){
+            app.expired = true;
+            app.errorMsg = "Your account is not activated yet. Please check your email for activation link.";
         } else {
             Auth.facebook($routeParams.token);
             $location.path('/');
@@ -129,9 +134,14 @@ angular.module('userControllers', ['userServices'])
 
 .controller('twitterCtrl', function($routeParams, Auth, $location, $window){
         var app = this;
+        app.errorMsg = false;
+        app.expired = false;
         //Auth.facebook
         if($window.location.pathname == '/twittererror'){
             app.errorMsg = "username not found in database";
+        } else if($window.location.pathname == '/twitter/inactive/error'){
+            app.expired = true;
+            app.errorMsg = "Your account is not activated yet. Please check your email for activation link.";
         } else {
             Auth.facebook($routeParams.token);
             $location.path('/');
@@ -139,12 +149,16 @@ angular.module('userControllers', ['userServices'])
        
 })
 
-
 .controller('googleCtrl', function($routeParams, Auth, $location, $window){
         var app = this;
+        app.errorMsg = false;
+        app.expired = false;
         //Auth.facebook
         if($window.location.pathname == '/googleerror'){
             app.errorMsg = "username not found in database";
+        } else if($window.location.pathname == '/google/inactive/error'){
+            app.expired = true;
+            app.errorMsg = "Your account is not activated yet. Please check your email for activation link.";
         } else {
             Auth.facebook($routeParams.token);
             $location.path('/');

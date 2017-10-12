@@ -13,7 +13,11 @@ module.exports = function (app, passport){
 	app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true, cookie: { secure: false }}));
 
 	passport.serializeUser(function(user, done) {
-	  token = jwt.sign({ username: user.username, password: user.password}, secret , {expiresIn: '24h'});
+		if(user.active){
+	  		token = jwt.sign({ username: user.username, password: user.password}, secret , {expiresIn: '24h'});
+	  	} else{
+	  		token = 'inactive/error';
+	  	}
 	  done(null, user.id);
 	});
 
@@ -30,7 +34,7 @@ module.exports = function (app, passport){
 		profileFields: ['id', 'displayName', 'photos', 'email']
 	},
   	function(accessToken, refreshToken, profile, done) {
-  		User.findOne({ email: profile._json.email}).select('username password email').exec(function(err, user){
+  		User.findOne({ email: profile._json.email}).select('username active password email').exec(function(err, user){
   		  			
   		  			if(err) done(err);
 
@@ -52,7 +56,7 @@ module.exports = function (app, passport){
 	  },
 	  function(token, tokenSecret, profile, done) {
 	  		console.log(profile.emails[0].value);
-	  		User.findOne({ email: profile.emails[0].value }).select('username password email').exec(function(err, user){
+	  		User.findOne({ email: profile.emails[0].value }).select('username active password email').exec(function(err, user){
   		  			
   		  			if(err) done(err);
 
@@ -74,7 +78,7 @@ module.exports = function (app, passport){
 	  },
 	  function(accessToken, refreshToken, profile, done) {
 	       console.log(profile.emails[0].value);
-	       User.findOne({ email: profile.emails[0].value }).select('username password email').exec(function(err, user){
+	       User.findOne({ email: profile.emails[0].value }).select('username active password email').exec(function(err, user){
   		  			
   		  			if(err) done(err);
 
