@@ -28,18 +28,21 @@ angular.module('mainController', ['authServices'])
 	this.facebook = function () {
 		console.log($window.location.host);
 		console.log($window.location.protocol);
+		app.disabled = true;
 		$window.location = $window.location.protocol + "//" + $window.location.host + "/auth/facebook";
 	};
 
 	this.twitter = function () {
 		//console.log($window.location.host);
 		//console.log($window.location.protocol);
+		app.disabled = true;
 		$window.location = $window.location.protocol + "//" + $window.location.host + "/auth/twitter";
 	};
 
 	this.google = function () {
 		//console.log($window.location.host);
 		//console.log($window.location.protocol);
+		app.disabled = true;
 		$window.location = $window.location.protocol + "//" + $window.location.host + "/auth/google";
 	};
 
@@ -47,6 +50,7 @@ angular.module('mainController', ['authServices'])
 		app.loading = true;
 		app.errorMsg = false;
 		app.expired = false;
+		app.disabled = true;
 		console.log('form submitted');
 				//$http.post('/api/authenticate', app.loginData).then(function(data){
 		     Auth.login(app.loginData).then(function(data){
@@ -71,6 +75,7 @@ angular.module('mainController', ['authServices'])
 					} else {
 						app.loading = false;
 						app.errorMsg = data.data.message;
+						app.disabled = false;
 				}
 				}
 		});

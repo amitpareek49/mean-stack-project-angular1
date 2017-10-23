@@ -228,12 +228,136 @@ router.put('/activate/:token', function(req, res) {
 			}
 		});
 	});
-
 });
+
+router.get('/resetusername/:email', function(req, res){
+	User.findOne({ email: req.params.email }).select('email username name').exec(function(err, user){
+		if(err){
+			res.json({ success: false, message: err});
+		} else{
+			if(!req.params.email){
+				res.json({ success: false, message: 'No email was provided'});
+			} else{
+				if(!user){
+					res.json({ success: false, message: 'Email was not found'});
+				} else{
+					var email = {
+			            from: 'localhost',
+			            to: user.email, 
+			            subject: 'Localhost host username request',
+			            text: 'Plain Text Version of E-mail',
+			            //html: 'HTML Version of E-mail'
+			            //html: 'Hello <strong> ' + user.name + '</strong><br><br>Your recently requested your username. Please save it in your files: ' + user.username + '!'	            l
+			        	html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Your recently requested your username. Please save it in your files: ' + user.username + '!'
+			        };
+
+		            client.sendMail(email, function(err, info) {
+		                if (err) console.log(err);
+		            });
+
+					res.json({ success: true, message: 'username has been sent to the E-mail'});
+				}
+			}
+		}
+	})
+});
+
+router.put('/resetpassword', function(req, res){
+	User.findOne({username: req.body.username}).select('username active email resettoken name').exec(function(err, user){
+		if(err) console.log(err);
+		if(!user) {
+			res.json({ success: false, message: 'User was not found'});
+		} else if(!user.active){
+			res.json({ success: false, message: 'Account has not yet been activated'});
+		} else {
+			console.log(req.body);
+			user.resettoken = jwt.sign({ username: user.username, email: user.email}, secret , {expiresIn: '24h'});
+			user.save(function(err){
+				if(err){
+					res.json({success: false, message: err});
+				} else {
+					var email = {
+		                from: 'amit33185@gmail.com',
+		                to: user.email,
+		                subject: 'Localhost reset password request',
+		                text: 'Plain Text Version of E-mail',
+		                html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You recently requested a password reset link. Please click on the link below to reset your password:<br><br><a href="http://localhost:8081/reset/' + user.resettoken + '">http://localhost:8081/reset/</a>'
+		            };
+
+		            client.sendMail(email, function(err, info) {
+		                if (err) {
+		                    console.log(err); 
+		                } else {
+		                    console.log('message = ' + info.message);
+		                }
+		            });
+					res.json({ success: true, message: 'Please check your email for password reset link'});
+				}
+			})
+		}
+	})
+})
+
+router.get('/resetpassword/:token', function(req, res){
+	console.log('Test');
+	User.findOne({resettoken: req.params.token}).select().exec(function(err, user){
+		if(err) console.log(err);
+		var token= req.params.token;
+		jwt.verify(token, secret , function(err, decoded) {
+		 if(err){ 
+		 	res.json({success: false, message: 'Password link has expired'});
+		} else {
+			if(!user){
+				res.json({success: false, message: 'Password link has expired'});
+			} else{
+				res.json({success: true, user: user});
+			}
+		}
+	})
+	})
+})
+
+router.put('/savepassword', function(req, res){
+	User.findOne({ username: req.body.username }).select('username name email resettoken password').exec(function(err, user){
+		if(err) console.log(err);
+		else{
+			if(req.body.password === null || req.body.password === '') {
+				res.json({success: false, message: 'Password not provided'});
+			} else{
+				console.log(req.body);
+				user.password = req.body.password;
+				user.resettoken = false;
+				user.save(function(err){
+					if(err){
+						res.json({ success: false, message: 'Error saving in database' });
+					} else {
+						var email = {
+				            from: 'localhost',
+				            to: user.email,
+				            subject: 'Localhost reset password',
+				            text: 'Plain Text Version of E-mail',
+				            html: 'Hello<strong> ' + user.name + '</strong>,<br><br> This email is to notify that you recently changed your password using localhost.'
+			            };
+
+			            client.sendMail(email, function(err, info) {
+			                if (err) {
+			                    console.log(err); 
+			                } else {
+			                    console.log('message = ' + info.message);
+			                }
+			            });
+						res.json({ success: true, message: 'Password has been reset'});
+					}
+				})
+			}
+		}
+	});
+})
 
 router.use(function(req, res, next){
 	var token = req.body.token || req.body.query || req.headers['x-access-token'];
 
+	console.log(req.headers);
 	if(token){
 		jwt.verify(token, secret , function(err, decoded) {
 			 if(err){ 
@@ -245,10 +369,8 @@ router.use(function(req, res, next){
 	});
 
 	} else {
-		res.json({success: false, message: 'Not token provided'})
+		res.json({success: false, message: 'No token provided'})
 	}
-
-
 })
 
 router.post('/me', function (req, res){

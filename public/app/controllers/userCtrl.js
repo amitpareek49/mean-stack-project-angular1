@@ -6,6 +6,7 @@ angular.module('userControllers', ['userServices'])
 		this.regUser = function(regData, valid) {
 		app.loading = true;
 		app.errorMsg = false;
+        app.disabled = true;
 		console.log('form submitted');
 		
         if(valid){
@@ -20,6 +21,7 @@ angular.module('userControllers', ['userServices'])
                         $location.path('/');
                     }, 2000);
                 } else {
+                    app.disabled = false;
                     app.loading = false; // Stop bootstrap loading icon
                     app.disabled = false; // If error occurs, remove disable lock from form
                     //$scope.alert = 'alert alert-danger'; // Set class for message
@@ -27,10 +29,11 @@ angular.module('userControllers', ['userServices'])
                 }
             });
         } else{
-                    app.loading = false; // Stop bootstrap loading icon
-                    app.disabled = false; // If error occurs, remove disable lock from form
-                    //$scope.alert = 'alert alert-danger'; // Set class for message
-                    app.errorMsg = 'Please ensure that you have filled the form properly.'; 
+                app.disabled = false;
+                app.loading = false; // Stop bootstrap loading icon
+                app.disabled = false; // If error occurs, remove disable lock from form
+                //$scope.alert = 'alert alert-danger'; // Set class for message
+                app.errorMsg = 'Please ensure that you have filled the form properly.'; 
         }
 	};
 
