@@ -127,11 +127,11 @@ router.post('/authenticate', function(req, res) {
 
 
             else {
-            	var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' });
+            	var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '30s' });
                 res.json({ success: true, message: 'User Authenticated', token: token });
             }
             } else {
-                res.json({ success: false, message: 'No password provided' });              
+                res.json({ success: false, message: 'No password provided' });       
             }
         }
     });
@@ -371,6 +371,18 @@ router.use(function(req, res, next){
 	} else {
 		res.json({success: false, message: 'No token provided'})
 	}
+})
+
+router.get('/renewToken/:username', function(req, res) {
+	User.findOne({ username: req.params.username }).select('username email').exec(function(err, user){
+		if(err) throw err;
+		if(!user){
+			res.json({ success: false, message: 'No user found'});
+		} else {
+			var newToken = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '24h' });
+            res.json({ success: true, token: newToken });
+		}
+	})
 })
 
 router.post('/me', function (req, res){
