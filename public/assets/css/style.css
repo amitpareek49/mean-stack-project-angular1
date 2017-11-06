@@ -2,6 +2,10 @@
 	float: right;
 }
 
+.showmore {
+  display: inline;
+}
+
 .dizzy-gillespie {
   filter: saturate(3);
   width: 0.1px;

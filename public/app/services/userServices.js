@@ -54,5 +54,26 @@ angular.module('userServices', [])
 		return $http.get('/api/renewToken/' + username);
 	}
 
+	userFactory.getPermission = function() {
+		return $http.get('/api/permission/');
+	}
+
+	//router.get('/management', function(req, res)){
+	userFactory.getUsers = function () {
+		return $http.get('/api/management/');
+	}
+
+	userFactory.getUser = function(id){
+		return $http.get('/api/edit/' + id);
+	}
+
+	userFactory.deleteUser = function (username){
+		return $http.delete('/api/management/' + username);
+	}
+
+	userFactory.editUser = function (id){
+		return $http.put('/api/edit', id);
+	}
+
 	return userFactory;
 });

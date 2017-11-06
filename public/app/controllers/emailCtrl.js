@@ -22,7 +22,6 @@ angular.module('emailController', ['userServices'])
 
 })
 
-
 //userFactory.checkCredentials(loginData)
 .controller('resendCtrl', function(User){
     app = this;

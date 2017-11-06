@@ -102,17 +102,23 @@ angular.module('mainController', ['authServices', 'userServices'])
 		if(Auth.isLoggedIn()){
 		app.userIsLoggedIn = true;
 		Auth.getUser().then(function(data){
-			//console.log(data.data);
-			app.loadme = true;
 			app.username = data.data.username;
 			app.email = data.data.email;
+
+			User.getPermission().then(function(data){
+				if(data.data.permission === 'admin' || data.data.permission === 'moderator'){
+					app.loadme = true;
+					app.authorized = true;
+				} else{
+					app.loadme = true;
+				}
+			});
 		});
-	} else{
-		app.userIsLoggedIn = false;
-		app.loadme = true;
-		//console.log('user not logged in');
-		app.username = '';
-	}
+		} else{
+			app.userIsLoggedIn = false;
+			app.loadme = true;
+			app.username = '';
+		}
 
 	if($location.hash() == '_=_') $location.hash(null);
 	});
