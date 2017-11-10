@@ -1,6 +1,6 @@
 angular.module('managementController', ['userServices'])
 
-.controller('managementCtrl', function (User) {
+.controller('managementCtrl', function (User, $scope) {
 	var app = this;
 
 	app.loading = true;
@@ -9,6 +9,7 @@ angular.module('managementController', ['userServices'])
 	app.editAccess = false;
 	app.deleteAccess = false;
 	app.limit = 2;
+	app.searchLimit = 0;
 
 	function getUsers(){
 		User.getUsers().then(function(data){
@@ -59,6 +60,55 @@ angular.module('managementController', ['userServices'])
 			}
 		})
 	}
+
+	app.search = function (searchKeyword, number) {
+
+		if(searchKeyword){
+
+			if(searchKeyword.length > 0){
+				app.limit = 0;
+				$scope.searchFilter = searchKeyword;
+				app.limit = number;
+			} else {
+				$scope.searchFilter = undefined;
+				app.limit = 0;
+			}
+		} else {
+			$scope.searchFilter = undefined;
+			app.limit = 0;
+		}
+	};
+
+	app.clear = function () {
+		$scope.number = 'Clear';
+		app.limit = 0;
+		$scope.searchKeyword = undefined;
+		$scope.searchFilter = undefined;
+		app.showMoreError = false;
+	};
+
+	app.advancedSearch = function(searchByUsername, searchByEmail, searchByName) {
+        // Ensure only to perform advanced search if one of the fields was submitted
+        if (searchByUsername || searchByEmail || searchByName) {
+            $scope.advancedSearchFilter = {}; // Create the filter object
+            if (searchByUsername) {
+                $scope.advancedSearchFilter.username = searchByUsername; // If username keyword was provided, search by username
+            }
+            if (searchByEmail) {
+                $scope.advancedSearchFilter.email = searchByEmail; // If email keyword was provided, search by email
+            }
+            if (searchByName) {
+                $scope.advancedSearchFilter.name = searchByName; // If name keyword was provided, search by name
+            }
+            app.searchLimit = undefined; // Clear limit on search results
+        }
+    };
+
+    // Function: Set sort order of results
+    app.sortOrder = function(order) {
+        app.sort = order; // Assign sort order variable requested by user
+    };
+    
 })
 
 .controller('editCtrl', function($scope, $routeParams, User, $timeout){

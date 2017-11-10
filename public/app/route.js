@@ -149,6 +149,15 @@ var app = angular.module('appRoutes', ['ngRoute'])
 
 	})
 
+	.when('/search', {
+		templateUrl: '/app/views/pages/users/management/search.html',
+		controller: 'managementCtrl',
+		controllerAs: 'management',
+		authenticated: true,
+		permission: ['admin','moderator']
+
+	})
+
 	.otherwise({ redirectTo: '/'});
 
 	$locationProvider.html5Mode({
