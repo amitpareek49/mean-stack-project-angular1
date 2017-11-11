@@ -67,7 +67,7 @@ module.exports = function (router){
                 subject: 'Account activation link',
                 text: 'Plain Text Version of E-mail',
                 //html: 'HTML Version of E-mail'
-                html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8081/activate/' + user.temporarytoken + '">http://localhost:8081/activate/</a>'
+                html: 'Hello<strong> ' + user.name + '</strong>,<br><br>Thank you for registering at localhost.com. Please click on the link below to complete your activation:<br><br><a href="https://safe-island-40143.herokuapp.com/activate/' + user.temporarytoken + '">https://safe-island-40143.herokuapp.com/activate/</a>'
             };
 
             client.sendMail(email, function(err, info) {
@@ -177,7 +177,7 @@ router.put('/resend', function(req, res){
 	            subject: 'Activation link request',
 	            text: 'Plain Text Version of E-mail',
 	            //html: 'HTML Version of E-mail'
-	            html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You requested for account activation. Please click on the link below to complete your activation:<br><br><a href="http://localhost:8081/activate/' + user.temporarytoken + '">http://localhost:8081/activate/</a>'
+	            html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You requested for account activation. Please click on the link below to complete your activation:<br><br><a href="https://safe-island-40143.herokuapp.com/activate/' + user.temporarytoken + '">https://safe-island-40143.herokuapp.com/activate/</a>'
 	            };
 
 	            client.sendMail(email, function(err, info) {
@@ -281,7 +281,7 @@ router.put('/resetpassword', function(req, res){
 		                to: user.email,
 		                subject: 'Localhost reset password request',
 		                text: 'Plain Text Version of E-mail',
-		                html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You recently requested a password reset link. Please click on the link below to reset your password:<br><br><a href="http://localhost:8081/reset/' + user.resettoken + '">http://localhost:8081/reset/</a>'
+		                html: 'Hello<strong> ' + user.name + '</strong>,<br><br>You recently requested a password reset link. Please click on the link below to reset your password:<br><br><a href="https://safe-island-40143.herokuapp.com/reset/' + user.resettoken + '">https://safe-island-40143.herokuapp.com/reset/</a>'
 		            };
 
 		            client.sendMail(email, function(err, info) {
