@@ -3,13 +3,13 @@ angular.module('userControllers', ['userServices'])
 .controller('regCtrl', function($http, $location, $timeout, User){
 		
 		var app = this;
-		this.regUser = function(regData, valid) {
+		this.regUser = function(regData, valid, confirmed) {
 		app.loading = true;
 		app.errorMsg = false;
         app.disabled = true;
 		console.log('form submitted');
 		
-        if(valid){
+        if(valid && confirmed){
             User.create(app.regData).then(function(data) {
                 // Check if user was saved to database successfully
                 if (data.data.success) {

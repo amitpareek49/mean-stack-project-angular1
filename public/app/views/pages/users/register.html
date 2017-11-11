@@ -2,7 +2,7 @@
 	<h1>User Registration</h1>
 </div>
 
-<form name="regForm" ng-submit="register.regUser(regData, regForm.$valid);" novalidate>
+<form name="regForm" ng-submit="register.regUser(regData, regForm.$valid, confirmed);" novalidate>
 	<div ng-class="{'has-success': (regForm.name.$valid && !regForm.name.$pristine), 'has-error': (!regForm.name.$valid && !regForm.name.$pristine) || (!regForm.name.$valid && regForm.$submitted) }"> 
 	<label>Name: </label>
 	<input ng-disabled="register.disabled" class="form-control" type="name" name="name" placeholder="enter your name" ng-model="register.regData.name" ng-pattern='/^(([a-zA-Z]{1,20})+[ ]+([a-zA-Z]{1,20})+)+$/' ng-minlength="1" ng-maxlength="20" required>
