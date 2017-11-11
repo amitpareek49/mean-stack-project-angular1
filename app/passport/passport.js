@@ -30,7 +30,7 @@ module.exports = function (app, passport){
 	passport.use(new FacebookStrategy({
 		clientID: '1816072505376705',
 		clientSecret: '9437315e8009924eca27ff7f2d2c5061',
-		callbackURL: "https://intense-bayou-59586.herokuapp.com/auth/facebook/callback",
+		callbackURL: "https://safe-island-40143.herokuapp.com/auth/facebook/callback",
 		profileFields: ['id', 'displayName', 'photos', 'email']
 	},
   	function(accessToken, refreshToken, profile, done) {
@@ -51,7 +51,7 @@ module.exports = function (app, passport){
 	passport.use(new TwitterStrategy({
 	    consumerKey: 'u2gpQuYtGg9BlBnF9hPz2Ummr',
 	    consumerSecret: '9cb95RPwvKBO2xrgXZxboOlGA1TuOL5BBHtpzZ6kgg6ElnDRTT',
-	    callbackURL: "https://intense-bayou-59586.herokuapp.com/auth/twitter/callback",
+	    callbackURL: "https://safe-island-40143.herokuapp.com/auth/twitter/callback",
 	    userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
 	  },
 	  function(token, tokenSecret, profile, done) {
@@ -74,7 +74,7 @@ module.exports = function (app, passport){
 	passport.use(new GoogleStrategy({
 	    clientID: '1072041634206-b325f1dvp7vei9rc2evbg61f12hc37c7.apps.googleusercontent.com',
 	    clientSecret: '3ZUN_9ZVaKAe8btGsZM5nYZz',
-	    callbackURL: "https://intense-bayou-59586.herokuapp.com/auth/google/callback"
+	    callbackURL: "https://safe-island-40143.herokuapp.com/auth/google/callback"
 	  },
 	  function(accessToken, refreshToken, profile, done) {
 	       console.log(profile.emails[0].value);
