@@ -121,12 +121,7 @@ router.post('/authenticate', function(req, res) {
                 var validPassword = user.comparePassword(req.body.password);
                 if (!validPassword) {
                 res.json({ success: false, message: 'Could not validate Password' });
-            } else if (!user.active){
-            	res.json({ success: false, message: 'Your account is not activated yet. Please check your email for activation link.', expired: true});
-            }
-
-
-            else {
+            }   else {
             	var token = jwt.sign({ username: user.username, email: user.email }, secret, { expiresIn: '2h' });
                 res.json({ success: true, message: 'User Authenticated', token: token });
             }

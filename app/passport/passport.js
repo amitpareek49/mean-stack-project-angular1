@@ -47,7 +47,7 @@ module.exports = function (app, passport){
 
 		//done(null, profile);
   	}
-		));1
+		));
 	passport.use(new TwitterStrategy({
 	    consumerKey: 'u2gpQuYtGg9BlBnF9hPz2Ummr',
 	    consumerSecret: '9cb95RPwvKBO2xrgXZxboOlGA1TuOL5BBHtpzZ6kgg6ElnDRTT',
