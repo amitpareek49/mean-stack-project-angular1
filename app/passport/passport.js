@@ -13,12 +13,8 @@ module.exports = function (app, passport){
 	app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: true, cookie: { secure: false }}));
 
 	passport.serializeUser(function(user, done) {
-		if(user.active){
 	  		token = jwt.sign({ username: user.username, password: user.password}, secret , {expiresIn: '24h'});
-	  	} else{
-	  		token = 'inactive/error';
-	  	}
-	  done(null, user.id);
+	  		done(null, user.id);
 	});
 
 	passport.deserializeUser(function(id, done) {
